@@ -21,12 +21,14 @@ public class Bullet {
         this.x = x;
         this.y = y;
 
-        startX = xPos - startX;
-        startY = yPos - startY;
-        double angle1 = Math.atan(startY / startX);
-        double angle2 = Math.atan(startX / startY);
+        double startX1 = xPos - startX;
+        double startY1 = yPos - startY;
+        double angle1 = Math.atan(startY1 / startX1);
+        double angle2 = Math.atan(startX1 / startY1);
         sx = (float)(SPEED * (Math.sin(angle2)));
         sy = (float)(SPEED * (Math.sin(angle1)));
+        sx = Math.abs(sx);
+        sy = Math.abs(sy);
 
         if (texture == null) {
             texture = new Texture(path + "Bullet.png");
