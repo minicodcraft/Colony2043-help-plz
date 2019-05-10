@@ -1,38 +1,60 @@
 package com.colony2043.thryl.entities;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import com.colony2043.thryl.screens.playScreen;
+
 
 public class Bullet {
     String path = "C:\\Users\\minicodcraft\\Downloads\\game\\core\\assets\\";
-    public static final int SPEED = 2000;
+    private static final int SPEED = 10;
     private static Texture texture;
     float x, y;
-    public boolean remove = false;
+    float sx, sy;
+    double yPos = Gdx.input.getY(); // the y i want to go to
+    double xPos = Gdx.input.getX(); // the x i want to go to
 
-    public Bullet (float x, float y) {
+    public Bullet(float x, float y, double startX, double startY) {
         this.x = x;
         this.y = y;
 
-        if (texture == null)
+        startX = xPos - startX;
+        startY = yPos - startY;
+        double angle1 = Math.atan(startY / startX);
+        double angle2 = Math.atan(startX / startY);
+        sx = (float)(SPEED * (Math.sin(angle2)));
+        sy = (float)(SPEED * (Math.sin(angle1)));
+
+        if (texture == null) {
             texture = new Texture(path + "Bullet.png");
-    }
-
-
-    public void update (float deltaTime) {
-        y +=(SPEED * deltaTime);
-        x +=(SPEED * deltaTime);
-        if (y > Gdx.graphics.getHeight()|| y < (-1 * Gdx.graphics.getHeight()))
-            remove = true;
-        else if (x > Gdx.graphics.getWidth() || x < (-1 * Gdx.graphics.getWidth())){
-            remove = true;
         }
     }
 
-    public void render(SpriteBatch batch){
-        batch.draw(texture, x, y);
+    public  void update (float deltaTime){
+        if(x > 0 && y > 0) {
+            x += sx;
+            y += sy;
+        }
+        else if(x < 0 && y > 0){
+            x -= sx;
+            y += sy;
+        }
+        else if(x < 0 && y < 0){
+            x -= sx;
+            y -= sy;
+        }
+        else if(x > 0 && y < 0){
+            x += sx;
+            y -= sy;
+        }
+    }
+
+    public void render (SpriteBatch batch){
+            batch.draw(texture, x, y);
     }
 }
+
 
